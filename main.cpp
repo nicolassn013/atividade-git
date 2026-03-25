@@ -4,7 +4,7 @@
 
 using namespace std;
 
-// Classe base abstrata
+// abstrata
 class AtuadorLinha {
 private:
     string tag;
@@ -37,12 +37,12 @@ public:
         return area;
     }
 
-    // virtual porque cada derivada interpreta o percentual de forma diferente
+    
     virtual void aplicarReferenciaPercentual(double percentual) = 0;
     virtual void exibirResumo() const = 0;
 };
 
-// Classe derivada MotorEsteira
+
 class MotorEsteira : public AtuadorLinha {
 private:
     double frequenciaHz;
@@ -54,7 +54,7 @@ public:
     void aplicarReferenciaPercentual(double percentual) override {
         percentual = limitarPercentual(percentual);
 
-        // 100% = 60 Hz
+        
         frequenciaHz = (percentual / 100.0) * 60.0;
     }
 
@@ -65,7 +65,6 @@ public:
     }
 };
 
-// Classe derivada ValvulaDosagem
 class ValvulaDosagem : public AtuadorLinha {
 private:
     double aberturaPercentual;
@@ -89,19 +88,16 @@ int main() {
     MotorEsteira esteiraEntrada("M-101", "Entrada de garrafas");
     ValvulaDosagem valvulaXarope("FV-201", "Dosagem");
 
-    // vetor polimórfico
     vector<AtuadorLinha*> atuadores = {&esteiraEntrada, &valvulaXarope};
 
     const double referencia = 55.0;
 
-    // mesmo comando para todos
     for (AtuadorLinha* atuador : atuadores) {
         atuador->aplicarReferenciaPercentual(referencia);
     }
 
     cout << "Linha de envase com referencia unica de " << referencia << "%\n";
 
-    // cada objeto responde diferente
     for (const AtuadorLinha* atuador : atuadores) {
         atuador->exibirResumo();
     }
